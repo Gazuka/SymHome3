@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>Vous avez {{ recettes | length }} recettes :</p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recette in recettes %}
+                <tr> 
+                    <th scope="row">{{ recette.id }}</th>
+                    <td>
+                        <a href="{{ path('cuisine_recette_edit', { 'id': recette.id }) }}">
+                            {{ recette.nom }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

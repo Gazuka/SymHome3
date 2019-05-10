@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>Vous avez {{ stockages | length }} stockages :</p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Parent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stockage in stockages %}
+                <tr> 
+                    <th scope="row">{{ stockage.id }}</th>
+                    <td>
+                        <a href="{{ path('cuisine_stockage_edit', { 'id': stockage.id }) }}">
+                            {{ stockage.nom }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if stockage.parent %}
+                            <a href="{{ path('cuisine_stockage_edit', { 'id': stockage.parent.id }) }}">
+                                {{ stockage.parent.nom }}
+                            </a>
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

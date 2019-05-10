@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>Vous avez {{ typesaliment | length }} types d'aliment :</p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">?</th>
+            <th scope="col">?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for typealiment in typesaliment %}
+                <tr> 
+                    <th scope="row">{{ typealiment.id }}</th>
+                    <td>
+                        <a href="{{ path('cuisine_typealiment_edit', { 'id': typealiment.id }) }}">
+                            {{ typealiment.nom }}
+                        </a>
+                    </td>
+                    <td>
+                        ?
+                    </td>
+                    <td>
+                        ?
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

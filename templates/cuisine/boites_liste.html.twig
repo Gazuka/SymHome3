@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>Vous avez {{ boites | length }} boites :</p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Contenu</th>
+            <th scope="col">Emplacement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for boite in boites %}
+                <tr> 
+                    <th scope="row">{{ boite.id }}</th>
+                    <td>
+                        <a href="{{ path('cuisine_boite_edit', { 'id': boite.id }) }}">
+                            {{ boite.nom }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if boite.stockage | length == 0 %}
+                            vide
+                        {% else %}
+                            contenu
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if boite.preparations | length != 0 %}
+                            {{ boite.preparation.nom }}
+                        {% else %}
+                            ?
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
