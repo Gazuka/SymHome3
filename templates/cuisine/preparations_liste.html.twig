@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>Vous avez {{ preparations | length }} préparations :</p>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Date</th>
+            <th scope="col">Emplacement</th>
+            <th scope="col">Recette</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for preparation in preparations %}
+                <tr> 
+                    <th scope="row">{{ preparation.id }}</th>
+                    <td>
+                        <a href="{{ path('cuisine_preparation_edit', { 'id': preparation.id }) }}">
+                            {{ preparation.nom }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ preparation.datePreparation | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') | capitalize }}
+                    </td>
+                    <td>
+                        {% if preparation.boite | length != 0 %}
+                            {{ preparation.boite.nom }}
+                        {% else %}
+                            ?
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% for recette in preparation.recettes %}
+                            {{ recette.nom }}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -38,6 +38,11 @@ class Boite
         $this->preparations = new ArrayCollection();
     }
 
+    public function __tostring()
+    {
+        return $this->nom;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -26,6 +26,9 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="nourritureLink" href="#">Nourriture</a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nourritureLink">
+                    <a href="{{ path('cuisine_preparation_new') }}" class="dropdown-item">Créer une préparation</a>
+                    <a href="{{ path('cuisine_preparations_liste') }}" class="dropdown-item">Liste des préparations</a>
+                    <div class="dropdown-divider"></div>
                     <a href="{{ path('cuisine_recette_new') }}" class="dropdown-item">Créer une recette</a>
                     <a href="{{ path('cuisine_recettes_liste') }}" class="dropdown-item">Liste des recettes</a>
                     <div class="dropdown-divider"></div>

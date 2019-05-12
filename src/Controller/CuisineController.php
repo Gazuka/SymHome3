@@ -12,13 +12,16 @@ use App\Entity\Stockage;
 use App\Form\AlimentType;
 use App\Form\RecetteType;
 use App\Form\StockageType;
+use App\Entity\Preparation;
 use App\Entity\TypeAliment;
+use App\Form\PreparationType;
 use App\Form\TypeAlimentType;
 use App\Repository\BoiteRepository;
 use App\Repository\UniteRepository;
 use App\Repository\AlimentRepository;
 use App\Repository\RecetteRepository;
 use App\Repository\StockageRepository;
+use App\Repository\PreparationRepository;
 use App\Repository\TypeAlimentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -192,6 +195,50 @@ class CuisineController extends AbstractController
         return $this->editElement($element, $classType, $pagederesultat, $request, $manager);
     }
     
+    /** GESTION DES PREPARATIONS ******************************************************************************************************************************************************/
+    /**
+     * Création d'une préparation
+     * 
+     * @Route("/cuisine/preparation/new", name="cuisine_preparation_new")
+     *
+     * @return Response
+     */
+    public function creerPreparation(Request $request, ObjectManager $manager):Response {
+        $element = new Preparation();
+        $class = PreparationType::class;
+        $pagedebase = 'cuisine/element_new.html.twig';
+        $pagederesultat = 'cuisine_preparations_liste';
+        $titre = "Création d'une préparation";
+        return $this->creerElement($element, $request, $manager, $class, $pagedebase, $pagederesultat, $titre);
+    }
+
+    /**
+     * Affiche l'ensemble des préparations
+     * 
+     * @Route("/cuisine/preparation", name="cuisine_preparations_liste")
+     *
+     * @return Response
+     */
+    public function recupererPreparations(PreparationRepository $repo):Response {
+        $elements = "preparations";
+        $titre = "Listing des préparations";
+        $pagederesultat = "cuisine/preparations_liste.html.twig";
+        return $this->recupererElements($repo, $elements, $titre, $pagederesultat);
+    } 
+    
+    /**
+     * Permet d'afficher le formulaire d'édition d'une préparation
+     *
+     * @Route("/cuisine/preparation/{id}/edit", name="cuisine_preparation_edit")
+     * @return Response
+     */
+    public function editPreparation(Preparation $preparation, Request $request, ObjectManager $manager):Response {
+        $element = $preparation;
+        $classType = PreparationType::class;
+        $pagederesultat = "cuisine/element_edit.html.twig";
+        return $this->editElement($element, $classType, $pagederesultat, $request, $manager);
+    }
+
     /** GESTION DES RECETTES **************************************************************************************************************************************************************/
     /**
      * Création d'une recette
