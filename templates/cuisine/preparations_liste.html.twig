@@ -20,29 +20,40 @@
         </thead>
         <tbody>
             {% for preparation in preparations %}
-                <tr> 
-                    <th scope="row">{{ preparation.id }}</th>
-                    <td>
-                        <a href="{{ path('cuisine_preparation_edit', { 'id': preparation.id }) }}">
-                            {{ preparation.nom }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ preparation.datePreparation | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') | capitalize }}
-                    </td>
-                    <td>
-                        {% if preparation.boite | length != 0 %}
-                            {{ preparation.boite.nom }}
-                        {% else %}
-                            ?
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for recette in preparation.recettes %}
-                            {{ recette.nom }}
-                        {% endfor %}
-                    </td>
-                </tr>
+                {% if preparation.datedisparition is null %}
+                    <tr> 
+                        <th scope="row">{{ preparation.id }}</th>
+                        <td>
+                            <a href="{{ path('cuisine_preparation_edit', { 'id': preparation.id }) }}">
+                                {{ preparation.nom }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ preparation.datePreparation | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') | capitalize }}
+                        </td>
+                        <td>
+                            {% if preparation.boites | length > 0 %}
+                                {% for boite in preparation.boites %}
+                                    {{ boite.nom }}
+                                {% endfor %}
+                            {% else %}
+                                ?
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for recette in preparation.recettes %}
+                                {{ recette.nom }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr> 
+                        <th scope="row">{{ preparation.id }}</th>
+                        <td colspan="4">
+                            {{ preparation.nom }} <small>( Mangé le {{ preparation.datedisparition | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') | capitalize }} )</small>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

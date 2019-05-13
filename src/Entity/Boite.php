@@ -29,13 +29,12 @@ class Boite
     private $stockage;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Preparation", mappedBy="boite")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Preparation", inversedBy="boites")
      */
-    private $preparations;
+    private $preparation;
 
     public function __construct()
     {
-        $this->preparations = new ArrayCollection();
     }
 
     public function __tostring()
@@ -72,34 +71,20 @@ class Boite
         return $this;
     }
 
-    /**
-     * @return Collection|Preparation[]
-     */
-    public function getPreparations(): Collection
+    public function getPreparation(): ?Preparation
     {
-        return $this->preparations;
+        return $this->preparation;
     }
 
-    public function addPreparation(Preparation $preparation): self
+    public function setPreparation(?Preparation $preparation): self
     {
-        if (!$this->preparations->contains($preparation)) {
-            $this->preparations[] = $preparation;
-            $preparation->setBoite($this);
-        }
+        $this->preparation = $preparation;
 
         return $this;
     }
 
-    public function removePreparation(Preparation $preparation): self
+    public function vider()
     {
-        if ($this->preparations->contains($preparation)) {
-            $this->preparations->removeElement($preparation);
-            // set the owning side to null (unless already changed)
-            if ($preparation->getBoite() === $this) {
-                $preparation->setBoite(null);
-            }
-        }
-
-        return $this;
+        $this->preparation = null;
     }
 }

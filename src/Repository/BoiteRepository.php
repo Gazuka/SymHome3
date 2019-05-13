@@ -47,4 +47,12 @@ class BoiteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByPreparationVide()
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.preparation is null')
+            ->orderBy('b.nom', 'ASC')
+        ;
+    }
 }

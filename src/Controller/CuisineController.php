@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Boite;
 use App\Entity\Unite;
 use App\Entity\Aliment;
@@ -46,12 +47,25 @@ class CuisineController extends AbstractController
      * Création d'un formulaire pour un nouveau element (objet entity)
      * @return Response
      */
-    private function creerElement($element, $request, $manager, $class, $pagedebase, $pagederesultat, $titre):Response{
+    private function creerElement($element, $request, $manager, $class, $pagedebase, $pagederesultat, $titre, $dependances = null):Response{
         $form = $this->createForm($class, $element);        
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
             $manager->persist($element);
+            //Persist des dependances
+            if($dependances != null)
+            {
+                foreach($dependances as $dependance => $elem)
+                {
+                    eval('$objets = $element->get'.$dependance.'();');
+                    foreach($objets as $objet)
+                    {
+                        eval('$objet->set'.$elem.'($element);');
+                        $manager->persist($objet);
+                    }
+                }
+            }  
             $manager->flush();
             $this->addFlash(
                 'success',
@@ -86,13 +100,27 @@ class CuisineController extends AbstractController
      * Permet d'afficher le formulaire d'édition d'un élément
      * @return Response
      */
-    public function editElement($element, $classType, $pagederesultat, $request, $manager):Response {
+    public function editElement($element, $classType, $pagederesultat, $request, $manager, $dependances = null):Response {
         $form = $this->createForm($classType, $element);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
             $manager->persist($element);
+            //Persist des dependances
+            if($dependances != null)
+            {
+                foreach($dependances as $dependance => $elem)
+                {
+                    eval('$objets = $element->get'.$dependance.'();');
+                    foreach($objets as $objet)
+                    {
+                        eval('$objet->set'.$elem.'($element);');
+                        $manager->persist($objet);
+                    }
+                }
+            }  
+
             $manager->flush();
 
             $this->addFlash(
@@ -194,6 +222,47 @@ class CuisineController extends AbstractController
         $pagederesultat = "cuisine/element_edit.html.twig";
         return $this->editElement($element, $classType, $pagederesultat, $request, $manager);
     }
+
+    /**
+     * Vider une boite
+     *
+     * @Route("/cuisine/boite/{id}/vider", name="cuisine_boite_vider")
+     * @return Response
+     */
+    public function viderBoite(Boite $boite, Request $request, ObjectManager $manager):Response {
+        $preparation = $boite->getPreparation();
+        $preparation->manger(new DateTime('NOW'));
+        $manager->persist($preparation);
+        $boite->vider();
+        $manager->persist($boite);
+        $manager->flush();
+        $this->addFlash(
+            'danger',
+            "La boite : <strong>{$boite->getNom()}</strong> a bien été vidée !"
+        );
+        //Affichage de la liste des boites
+        return $this->redirectToRoute('cuisine_boites_liste');
+    }
+
+    /** N'est pas utilisé pour le moment
+     * Retourne un tableau des boites vides (pour affichage formulaire)
+     */
+    private function recupererBoitesVides(BoiteRepository $repo) {
+        $elements = "boites";
+        $titre = "Listing des boites";
+        $pagederesultat = "cuisine/boites_liste.html.twig";
+
+        $recup = $repo->findAll();
+        $recupvide = array();
+        foreach($recup as $boite)
+        {
+            if(sizeof($boite->getPreparations()) == 0)
+            {
+                array_push($recupvide, $boite);
+            }
+        }
+        return $recupvide;
+    }
     
     /** GESTION DES PREPARATIONS ******************************************************************************************************************************************************/
     /**
@@ -209,7 +278,8 @@ class CuisineController extends AbstractController
         $pagedebase = 'cuisine/element_new.html.twig';
         $pagederesultat = 'cuisine_preparations_liste';
         $titre = "Création d'une préparation";
-        return $this->creerElement($element, $request, $manager, $class, $pagedebase, $pagederesultat, $titre);
+        $dependances = array('Boites' => 'Preparation');
+        return $this->creerElement($element, $request, $manager, $class, $pagedebase, $pagederesultat, $titre, $dependances);
     }
 
     /**
@@ -236,7 +306,8 @@ class CuisineController extends AbstractController
         $element = $preparation;
         $classType = PreparationType::class;
         $pagederesultat = "cuisine/element_edit.html.twig";
-        return $this->editElement($element, $classType, $pagederesultat, $request, $manager);
+        $dependances = array('Boites' => 'Preparation');
+        return $this->editElement($element, $classType, $pagederesultat, $request, $manager, $dependances);
     }
 
     /** GESTION DES RECETTES **************************************************************************************************************************************************************/

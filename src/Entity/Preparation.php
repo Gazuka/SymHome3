@@ -29,11 +29,6 @@ class Preparation
     private $datePreparation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Boite", inversedBy="preparations")
-     */
-    private $boite;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Recette", inversedBy="preparations")
      */
     private $recettes;
@@ -43,9 +38,20 @@ class Preparation
      */
     private $repas;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Boite", mappedBy="preparation")
+     */
+    private $boites;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateDisparition;
+
     public function __construct()
     {
         $this->recettes = new ArrayCollection();
+        $this->boites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,18 +79,6 @@ class Preparation
     public function setDatePreparation(?\DateTimeInterface $datePreparation): self
     {
         $this->datePreparation = $datePreparation;
-
-        return $this;
-    }
-
-    public function getBoite(): ?Boite
-    {
-        return $this->boite;
-    }
-
-    public function setBoite(?Boite $boite): self
-    {
-        $this->boite = $boite;
 
         return $this;
     }
@@ -125,5 +119,53 @@ class Preparation
         $this->repas = $repas;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Boite[]
+     */
+    public function getBoites(): Collection
+    {
+        return $this->boites;
+    }
+
+    public function addBoite(Boite $boite): self
+    {
+        if (!$this->boites->contains($boite)) {
+            $this->boites[] = $boite;
+            $boite->setPreparation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoite(Boite $boite): self
+    {
+        if ($this->boites->contains($boite)) {
+            $this->boites->removeElement($boite);
+            // set the owning side to null (unless already changed)
+            if ($boite->getPreparation() === $this) {
+                $boite->setPreparation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateDisparition(): ?\DateTimeInterface
+    {
+        return $this->dateDisparition;
+    }
+
+    public function setDateDisparition(?\DateTimeInterface $dateDisparition): self
+    {
+        $this->dateDisparition = $dateDisparition;
+
+        return $this;
+    }
+
+    public function manger($date)
+    {
+        $this->dateDisparition = $date;
     }
 }

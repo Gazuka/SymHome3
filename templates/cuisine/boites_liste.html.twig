@@ -13,8 +13,9 @@
             <tr>
             <th scope="col">#</th>
             <th scope="col">Nom</th>
-            <th scope="col">Contenu</th>
             <th scope="col">Emplacement</th>
+            <th scope="col">Contenu</th>
+            <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,21 +24,35 @@
                     <th scope="row">{{ boite.id }}</th>
                     <td>
                         <a href="{{ path('cuisine_boite_edit', { 'id': boite.id }) }}">
+                            {% if boite.preparation %}
+                                <i class="fas fa-square"></i>
+                            {% else %}
+                               <i class="far fa-square"></i>
+                            {% endif %}
                             {{ boite.nom }}
                         </a>
                     </td>
                     <td>
                         {% if boite.stockage | length == 0 %}
-                            vide
+                            ?
                         {% else %}
-                            contenu
+                            {{boite.stockage}}
                         {% endif %}
                     </td>
                     <td>
-                        {% if boite.preparations | length != 0 %}
+                        {% if boite.preparation %}
                             {{ boite.preparation.nom }}
                         {% else %}
-                            ?
+                            vide
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if boite.preparation %}
+                            <a href="{{ path('cuisine_boite_vider', { 'id': boite.id }) }}">
+                                <i class="fas fa-cookie"></i>
+                            </a>
+                        {% else %}
+                            <i class="fas fa-cookie-bite"></i>
                         {% endif %}
                     </td>
                 </tr>
