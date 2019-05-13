@@ -19,6 +19,7 @@ use App\Form\PreparationType;
 use App\Form\TypeAlimentType;
 use App\Repository\BoiteRepository;
 use App\Repository\UniteRepository;
+use App\Entity\PreparationDateManger;
 use App\Repository\AlimentRepository;
 use App\Repository\RecetteRepository;
 use App\Repository\StockageRepository;
@@ -231,8 +232,12 @@ class CuisineController extends AbstractController
      */
     public function viderBoite(Boite $boite, Request $request, ObjectManager $manager):Response {
         $preparation = $boite->getPreparation();
-        $preparation->manger(new DateTime('NOW'));
+        $preparation->manger($boite, new DateTime('NOW'));
         $manager->persist($preparation);
+        foreach($preparation->getDatesManger() as $dateManger)
+        {
+            $manager->persist($dateManger);
+        }
         $boite->vider();
         $manager->persist($boite);
         $manager->flush();

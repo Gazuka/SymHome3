@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\PreparationDateManger;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PreparationRepository")
@@ -48,10 +49,16 @@ class Preparation
      */
     private $dateDisparition;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PreparationDateManger", mappedBy="Preparation", orphanRemoval=true)
+     */
+    private $DatesManger;
+
     public function __construct()
     {
         $this->recettes = new ArrayCollection();
         $this->boites = new ArrayCollection();
+        $this->DatesManger = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,8 +171,47 @@ class Preparation
         return $this;
     }
 
-    public function manger($date)
+    public function manger($boite, $date)
     {
-        $this->dateDisparition = $date;
+        $this->removeBoite($boite);
+        if(sizeof($this->boites) == 0)
+        {
+            $this->dateDisparition = $date;
+        }
+        $dateManger = new PreparationDateManger();
+        $dateManger->setPreparation($this);
+        $dateManger->setDateManger($date);
+        $this->addDatesManger($dateManger);
+    }
+
+    /**
+     * @return Collection|PreparationDateManger[]
+     */
+    public function getDatesManger(): Collection
+    {
+        return $this->DatesManger;
+    }
+
+    public function addDatesManger(PreparationDateManger $datesManger): self
+    {
+        if (!$this->DatesManger->contains($datesManger)) {
+            $this->DatesManger[] = $datesManger;
+            $datesManger->setPreparation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatesManger(PreparationDateManger $datesManger): self
+    {
+        if ($this->DatesManger->contains($datesManger)) {
+            $this->DatesManger->removeElement($datesManger);
+            // set the owning side to null (unless already changed)
+            if ($datesManger->getPreparation() === $this) {
+                $datesManger->setPreparation(null);
+            }
+        }
+
+        return $this;
     }
 }

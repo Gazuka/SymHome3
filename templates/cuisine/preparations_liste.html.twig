@@ -16,6 +16,7 @@
             <th scope="col">Date</th>
             <th scope="col">Emplacement</th>
             <th scope="col">Recette</th>
+            <th scope="col">&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -45,11 +46,14 @@
                                 {{ recette.nom }}
                             {% endfor %}
                         </td>
+                        <td>
+                            {{ preparation.boites | length }} / {{ preparation.boites | length + preparation.DatesManger | length }}
+                        </td>
                     </tr>
                 {% else %}
                     <tr> 
                         <th scope="row">{{ preparation.id }}</th>
-                        <td colspan="4">
+                        <td colspan="5">
                             {{ preparation.nom }} <small>( Mangé le {{ preparation.datedisparition | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') | capitalize }} )</small>
                         </td>
                     </tr>
