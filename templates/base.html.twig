@@ -9,14 +9,26 @@
             {% block stylesheets %}{% endblock %}
         </head>
         <body>
-            {% include 'block/header.html.twig' %}
-            {% block body %}{% endblock %}
-            {% include 'block/footer.html.twig' %}
-
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl">
+                        {% include 'block/header.html.twig' %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl">
+                        {% include 'block/footer.html.twig' %}
+                    </div>                    
+                </div>
+            </div>
             <script src="/js/jquery.min.js"></script>
             <script src="/js/popper.min.js"></script>
             <script src="/js/bootstrap.min.js"></script>
-            
             {% block javascripts %}{% endblock %}
         </body>
     </html>
