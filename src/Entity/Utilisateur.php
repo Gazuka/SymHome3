@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Utilisateur implements UserInterface
 {
@@ -52,7 +54,20 @@ class Utilisateur implements UserInterface
      */
     private $slug;
 
-    //public function __construct(UserPasswordEncoderInterface $encoder)
+    /**
+     * Permet d'initialiser le slug !
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeSlug(){
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->pseudo);
+        }
+    }
 
     public function getId(): ?int
     {
