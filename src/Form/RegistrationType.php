@@ -23,6 +23,7 @@ class RegistrationType extends ApplicationType
             ->add('pseudo', TextType::class, $this->getConfiguration("Pseudo", "Votre pseudo..."))
             ->add('photo', UrlType::class, $this->getConfiguration("Photo de profil", "Url de votre avatar..."))
             ->add('hash', PasswordType::class, $this->getConfiguration("Mot de passe", "Choisissez un bon mot de passe..."))
+            ->add('passwordConfirm', PasswordType::class, $this->getConfiguration("Confirmation du mot de passe", "Veuillez confirmer votre mot de passe..."))
         ;
     }
 

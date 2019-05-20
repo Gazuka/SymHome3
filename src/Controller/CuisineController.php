@@ -29,12 +29,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CuisineController extends AbstractController
 {
     /**
      * @Route("/cuisine", name="cuisine")
+     * @Route("/", name="accueil")
      */
     public function index()
     {
@@ -141,7 +143,8 @@ class CuisineController extends AbstractController
      * Création d'un aliment
      * 
      * @Route("/cuisine/aliment/new", name="cuisine_aliment_new")
-     *
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function creerAliment(Request $request, ObjectManager $manager):Response {

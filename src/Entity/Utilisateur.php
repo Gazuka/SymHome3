@@ -3,12 +3,20 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields = {"pseudo"},
+ *  message = "Ce pseudo est déjà utilisé !"
+ * )
  */
 class Utilisateur implements UserInterface
 {
@@ -21,26 +29,31 @@ class Utilisateur implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre nom")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre prénom")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Veuillez renseigner un email valide !")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre pseudo")
      */
     private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message="Veuillez donner une url valide pour votre photo de profil")
      */
     private $photo;
 
@@ -53,6 +66,21 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @Assert\EqualTo(propertyPath="hash", message="Vous n'avez pas correctement confirmé votre mot de passe...")
+     */
+    public $passwordConfirm;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="utilisateurs")
+     */
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * Permet d'initialiser le slug !
@@ -160,7 +188,13 @@ class Utilisateur implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles->map(function($role) {
+            return $role->getTitre();
+        })->toArray();
+
+        $roles[] = 'ROLE_USER';
+        //doit retourner un tableau de chaine de caractères avec les noms des roles
+        return $roles;
     }
 
     public function getPassword()
@@ -176,4 +210,24 @@ class Utilisateur implements UserInterface
     }
 
     public function eraseCredentials(){}
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+            $role->removeUtilisateur($this);
+        }
+
+        return $this;
+    }
 }
