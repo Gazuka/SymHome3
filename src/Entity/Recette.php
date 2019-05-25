@@ -31,7 +31,7 @@ class Recette
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Ustensile", inversedBy="recettes")
      */
-    private $ustensile;
+    private $ustensiles;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ingredient", mappedBy="recette")
@@ -55,7 +55,7 @@ class Recette
 
     public function __construct()
     {
-        $this->ustensile = new ArrayCollection();
+        $this->ustensiles = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->etapesRecette = new ArrayCollection();
         $this->repas = new ArrayCollection();
@@ -99,15 +99,15 @@ class Recette
     /**
      * @return Collection|Ustensile[]
      */
-    public function getUstensile(): Collection
+    public function getUstensiles(): Collection
     {
-        return $this->ustensile;
+        return $this->ustensiles;
     }
 
     public function addUstensile(Ustensile $ustensile): self
     {
-        if (!$this->ustensile->contains($ustensile)) {
-            $this->ustensile[] = $ustensile;
+        if (!$this->ustensiles->contains($ustensile)) {
+            $this->ustensiles[] = $ustensile;
         }
 
         return $this;
@@ -115,8 +115,8 @@ class Recette
 
     public function removeUstensile(Ustensile $ustensile): self
     {
-        if ($this->ustensile->contains($ustensile)) {
-            $this->ustensile->removeElement($ustensile);
+        if ($this->ustensiles->contains($ustensile)) {
+            $this->ustensiles->removeElement($ustensile);
         }
 
         return $this;

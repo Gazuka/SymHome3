@@ -14,9 +14,7 @@ class RecetteType extends AbstractType
         $builder
             ->add('nom')
             ->add('portion')
-            ->add('ustensile')
-            ->add('repas')
-            ->add('preparations')
+            ->add('ustensiles')
         ;
     }
 
