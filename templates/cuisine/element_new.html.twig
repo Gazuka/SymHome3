@@ -2,6 +2,8 @@
 
 {% block title %}{{ titre }}{% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
 
     <div class="container">
@@ -16,4 +18,47 @@
         {{ form_end(form) }}        
     </div>
 
+{% endblock %}
+
+
+{% block _recette_etapesRecette_widget %}
+    <p>Ici, vous pouvez ajouter une étape pour la recette !</p>
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <button type="button" id="add-etape" class="btn btn-primary">Ajouter une étape</button>
+    </div>
+{% endblock %}
+
+{% block _recette_etapesRecette_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _recette_etapesRecette_entry_widget %}
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                {{ form_widget(form.descriptif) }}
+            </div>
+            <div class="col">
+                {{ form_widget(form.position) }}
+                {{ form_widget(form.ingredients) }}
+                {{ form_widget(form.ustensiles) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#add-etape').click(function(){
+            // Je récupère le numéro des futurs champs à créer
+            const index = $('#recette_etapesRecette div.form-group').length;
+
+            // Je récupère le prototype des entrées
+            const tmpl = $('#recette_etapesRecette').data('prototype').replace(/__name__/g, index);
+
+            // J'injecte ce code au sein de la div
+            $('#recette_etapesRecette').append(tmpl);
+        });
+    </script>
 {% endblock %}

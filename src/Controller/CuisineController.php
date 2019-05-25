@@ -15,6 +15,7 @@ use App\Form\RecetteType;
 use App\Form\StockageType;
 use App\Entity\Preparation;
 use App\Entity\TypeAliment;
+use App\Entity\EtapeRecette;
 use App\Form\PreparationType;
 use App\Form\TypeAlimentType;
 use App\Repository\BoiteRepository;
@@ -328,6 +329,8 @@ class CuisineController extends AbstractController
      */
     public function creerRecette(Request $request, ObjectManager $manager):Response {
         $element = new Recette();
+        $etape = new EtapeRecette();
+        $element->addEtapesRecette($etape);
         $class = RecetteType::class;
         $pagedebase = 'cuisine/element_new.html.twig';
         $pagederesultat = 'cuisine_recettes_liste';
