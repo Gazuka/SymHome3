@@ -20,7 +20,8 @@ class RecetteType extends AbstractType
             ->add('etapesRecette', CollectionType::class,
             [
                 'entry_type' => EtapeRecetteType::class,
-                'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true
             ])
         ;
     }
