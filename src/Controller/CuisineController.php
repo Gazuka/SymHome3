@@ -27,6 +27,7 @@ use App\Repository\RecetteRepository;
 use App\Repository\StockageRepository;
 use App\Repository\PreparationRepository;
 use App\Repository\TypeAlimentRepository;
+use App\Repository\EtapeRecetteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -310,7 +311,7 @@ class CuisineController extends OutilsController
      * @Route("/cuisine/recette/{id}/edit", name="cuisine_recette_edit")
      * @return Response
      */
-    public function editRecette(Recette $recette, Request $request, ObjectManager $manager):Response {
+    public function editRecette(Recette $recette, Request $request, ObjectManager $manager, EtapeRecetteRepository $repo):Response {
         $variables['request'] = $request;
         $variables['manager'] = $manager;
         $variables['element'] = $recette;
@@ -321,7 +322,10 @@ class CuisineController extends OutilsController
         $variables['dependances'] = array('EtapesRecette' => 'Recette');
         $variables['texteConfirmation'] = "La recette ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
-        
+        $variables['delete']['classParent'] = 'Recette';
+        $variables['delete']['classEnfant'] = 'EtapesRecette';
+        $variables['delete']['repo'] = $repo;
+
         return $this->formElement($variables);
     }
 

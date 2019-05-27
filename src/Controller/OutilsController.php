@@ -31,6 +31,7 @@ class OutilsController extends AbstractController
         if(array_key_exists('pagederesultatConfig', $variables)){$pagederesultatConfig = $variables['pagederesultatConfig'];}else{$pagederesultatConfig = array();}
         if(array_key_exists('dependances', $variables)){$dependances = $variables['dependances'];}else{$dependances = null;}
         if(array_key_exists('texteConfirmationEval', $variables)){$texteConfirmationEval = $variables['texteConfirmationEval'];}else{$texteConfirmationEval = array();}
+        if(array_key_exists('delete', $variables)){$delete = $variables['delete'];}else{$delete = null;}
 
         //On crée le formulaire pour l'élèment de la classe
         $form = $this->createForm($classType, $element);        
@@ -64,13 +65,31 @@ class OutilsController extends AbstractController
                 }
             }  
 
+            //Delete des elements orphelins...
+            if($delete != null)
+            {
+                $recup = $delete['repo']->findAll();
+                foreach($recup as $elem)
+                {
+                    dump('$elem->get'.$delete['classParent'].'() === $element;');
+
+                    eval('if($elem->getRecette() === $element);');
+                    {
+                        dump($elem->getRecette());
+                        if (!$element->getEtapesRecette()->contains($elem))
+                        {
+                            $manager->remove($elem);
+                        }
+                    }
+                }
+            }
+die();
             //On enregistre le tout
             $manager->flush();
 
             //On affiche un message de validation
             foreach($texteConfirmationEval as $key => $valeur)
             {
-                dump($valeur);
                 eval('$valeur = '.$valeur);
                 $texteConfirmation = str_replace($key, $valeur, $texteConfirmation);
             }

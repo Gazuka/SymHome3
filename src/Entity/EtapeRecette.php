@@ -50,6 +50,11 @@ class EtapeRecette
         $this->ustensiles = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->descriptif;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
