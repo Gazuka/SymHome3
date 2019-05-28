@@ -322,7 +322,7 @@ class CuisineController extends OutilsController
         $variables['dependances'] = array('EtapesRecette' => 'Recette');
         $variables['texteConfirmation'] = "La recette ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
-        $variables['delete']['classParent'] = 'Recette';
+        $variables['delete']['findBy'] = 'recette';
         $variables['delete']['classEnfant'] = 'EtapesRecette';
         $variables['delete']['repo'] = $repo;
 
