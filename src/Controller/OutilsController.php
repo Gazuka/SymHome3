@@ -29,9 +29,9 @@ class OutilsController extends AbstractController
         
         //Variables attendues optionnels !
         if(array_key_exists('pagederesultatConfig', $variables)){$pagederesultatConfig = $variables['pagederesultatConfig'];}else{$pagederesultatConfig = array();}
-        if(array_key_exists('dependances', $variables)){$dependances = $variables['dependances'];}else{$dependances = null;}
+        if(array_key_exists('dependances', $variables)){$dependances = $variables['dependances'];}else{$dependances = array();}
         if(array_key_exists('texteConfirmationEval', $variables)){$texteConfirmationEval = $variables['texteConfirmationEval'];}else{$texteConfirmationEval = array();}
-        if(array_key_exists('delete', $variables)){$delete = $variables['delete'];}else{$delete = null;}
+        if(array_key_exists('deletes', $variables)){$deletes = $variables['deletes'];}else{$deletes = array();}
 
         //On crée le formulaire pour l'élèment de la classe
         $form = $this->createForm($classType, $element);        
@@ -44,7 +44,7 @@ class OutilsController extends AbstractController
             $manager->persist($element);
 
             //On persist ses dependances
-            if($dependances != null)
+            foreach($dependances as $dependances)
             {
                 foreach($dependances as $dependance => $elem)
                 {
@@ -66,14 +66,13 @@ class OutilsController extends AbstractController
             }  
 
             //Delete des elements orphelins...
-            if($delete != null)
+            foreach($deletes as $delete)
             {
                 $findBy = $delete['findBy'];
+
                 $classEnfant = $delete['classEnfant'];
 
                 $recup = $delete['repo']->findBy([$findBy => $element]);
-
-                dump($recup);
 
                 foreach($recup as $elem)
                 {

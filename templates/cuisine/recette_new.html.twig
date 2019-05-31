@@ -20,7 +20,7 @@
 
 {% endblock %}
 
-
+{# GESTION DES ETAPES RECETTE ################################################################################################################################################}
 {% block _recette_etapesRecette_widget %}
     <p>Ici, vous pouvez ajouter une étape pour la recette !</p>
     {{ form_widget(form) }}
@@ -58,20 +58,24 @@
     </div>
 {% endblock %}
 
+{# GESTION DES ETAPES RECETTE ################################################################################################################################################}
+
+{# GESTION DES JAVASCRIPTS ###################################################################################################################################################}
 {% block javascripts %}
     <script>
         $('#add-etape').click(function(){
             // Je récupère le numéro des futurs champs à créer
-            const index = +$('#widgets-counter').val(); //Le + permet de transformer la valeur en int
-
+            var index = +$('#widgets-counter').val();
+            if(index==0)
+            {
+                index = $('#recette_etapesRecette div.form-group').length;
+                $('#widgets-counter').val(index);
+            }       
             // Je récupère le prototype des entrées
             const tmpl = $('#recette_etapesRecette').data('prototype').replace(/__name__/g, index);
-
             // J'injecte ce code au sein de la div
             $('#recette_etapesRecette').append(tmpl);
-
             $('#widgets-counter').val(index + 1);
-
             // Je gère le bouton supprimer
             handleDeleteButtons();
         });

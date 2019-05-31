@@ -25,6 +25,7 @@ use App\Entity\PreparationDateManger;
 use App\Repository\AlimentRepository;
 use App\Repository\RecetteRepository;
 use App\Repository\StockageRepository;
+use App\Repository\IngredientRepository;
 use App\Repository\PreparationRepository;
 use App\Repository\TypeAlimentRepository;
 use App\Repository\EtapeRecetteRepository;
@@ -285,6 +286,7 @@ class CuisineController extends OutilsController
         $variables['pagederesultat'] = 'cuisine_recettes_liste';
         $variables['titre'] = "Création d'une recette";
         $variables['dependances'] = array('EtapesRecette' => 'Recette');
+        $variables['dependances'] = array('Ingredients' => 'Recette');
         $variables['texteConfirmation'] = "La recette ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -311,21 +313,20 @@ class CuisineController extends OutilsController
      * @Route("/cuisine/recette/{id}/edit", name="cuisine_recette_edit")
      * @return Response
      */
-    public function editRecette(Recette $recette, Request $request, ObjectManager $manager, EtapeRecetteRepository $repo):Response {
+    public function editRecette(Recette $recette, Request $request, ObjectManager $manager, EtapeRecetteRepository $repoEtapeRecette, IngredientRepository $repoIngredient):Response {
         $variables['request'] = $request;
         $variables['manager'] = $manager;
         $variables['element'] = $recette;
         $variables['classType'] = RecetteType::class;
-        $variables['pagedebase'] = 'cuisine/recette_edit.html.twig';
+        $variables['pagedebase'] = 'cuisine/recette_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_recettes_liste';
-        $variables['titre'] = "Edition de la recette".$recette->getNom().".";
-        $variables['dependances'] = array('EtapesRecette' => 'Recette');
+        $variables['titre'] = "Edition de la recette : ".$recette->getNom().".";
+        $variables['dependances'][1] = array('EtapesRecette' => 'Recette');
+        $variables['dependances'][2] = array('Ingredients' => 'Recette');
         $variables['texteConfirmation'] = "La recette ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
-        $variables['delete']['findBy'] = 'recette';
-        $variables['delete']['classEnfant'] = 'EtapesRecette';
-        $variables['delete']['repo'] = $repo;
-
+        $variables['deletes'][1] = array('findBy' => 'recette', 'classEnfant' => 'EtapesRecette', 'repo' => $repoEtapeRecette );
+        $variables['deletes'][2] = array('findBy' => 'recette', 'classEnfant' => 'Ingredient', 'repo' => $repoIngredient );
         return $this->formElement($variables);
     }
 
