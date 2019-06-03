@@ -44,24 +44,22 @@ class OutilsController extends AbstractController
             $manager->persist($element);
 
             //On persist ses dependances
-            foreach($dependances as $dependances)
+            dump($dependances);
+            foreach($dependances as $dependance => $elem)
             {
-                foreach($dependances as $dependance => $elem)
+                eval('$objets = $element->get'.$dependance.'();');
+                foreach($objets as $objet)
                 {
-                    eval('$objets = $element->get'.$dependance.'();');
-                    foreach($objets as $objet)
+                    if(method_exists($objet, 'add'.$elem))
                     {
-                        if(method_exists($objet, 'add'.$elem))
-                        {
-                            eval('$objet->add'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
-                        }
-                        else
-                        {
-                            eval('$objet->set'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
-                        }
-
-                        $manager->persist($objet);
+                        eval('$objet->add'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
                     }
+                    else
+                    {
+                        eval('$objet->set'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
+                    }
+
+                    $manager->persist($objet);
                 }
             }  
 

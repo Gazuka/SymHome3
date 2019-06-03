@@ -66,7 +66,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_aliments_liste';
         $variables['titre'] = "Création d'un aliment";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "L'aliment ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -77,6 +76,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des aliments
      * 
      * @Route("/cuisine/aliments", name="cuisine_aliments_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -91,6 +91,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'un aliment
      *
      * @Route("/cuisine/aliment/{id}/edit", name="cuisine_aliment_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editAliment(Aliment $aliment, Request $request, ObjectManager $manager):Response {
@@ -101,7 +103,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_edit.html.twig';
         $variables['pagederesultat'] = 'cuisine_aliments_liste';
         $variables['titre'] = "Edition de l'aliment".$aliment->getNom().".";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "L'aliment ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -113,6 +114,7 @@ class CuisineController extends OutilsController
      * Création d'une boite vide
      * 
      * @Route("/cuisine/boite/new", name="cuisine_boite_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -124,7 +126,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_boites_liste';
         $variables['titre'] = "Création d'une boite";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "La boite ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -135,6 +136,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des boites
      * 
      * @Route("/cuisine/boites", name="cuisine_boites_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -149,6 +151,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'une boite
      *
      * @Route("/cuisine/boite/{id}/edit", name="cuisine_boite_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editBoite(Boite $boite, Request $request, ObjectManager $manager):Response {
@@ -159,7 +163,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_edit.html.twig';
         $variables['pagederesultat'] = 'cuisine_boites_liste';
         $variables['titre'] = "Edition de la boite ".$boite->getNom().".";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "La boite ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -170,6 +173,8 @@ class CuisineController extends OutilsController
      * Vider une boite
      *
      * @Route("/cuisine/boite/{id}/vider", name="cuisine_boite_vider")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function viderBoite(Boite $boite, Request $request, ObjectManager $manager):Response {
@@ -216,6 +221,7 @@ class CuisineController extends OutilsController
      * Création d'une préparation
      * 
      * @Route("/cuisine/preparation/new", name="cuisine_preparation_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -238,6 +244,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des préparations
      * 
      * @Route("/cuisine/preparation", name="cuisine_preparations_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -252,6 +259,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'une préparation
      *
      * @Route("/cuisine/preparation/{id}/edit", name="cuisine_preparation_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editPreparation(Preparation $preparation, Request $request, ObjectManager $manager):Response {
@@ -274,6 +283,7 @@ class CuisineController extends OutilsController
      * Création d'une recette
      * 
      * @Route("/cuisine/recette/new", name="cuisine_recette_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -285,8 +295,7 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/recette_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_recettes_liste';
         $variables['titre'] = "Création d'une recette";
-        $variables['dependances'] = array('EtapesRecette' => 'Recette');
-        $variables['dependances'] = array('Ingredients' => 'Recette');
+        $variables['dependances'] = array('EtapesRecette' => 'Recette', 'Ingredients' => 'Recette');
         $variables['texteConfirmation'] = "La recette ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -297,6 +306,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des recettes
      * 
      * @Route("/cuisine/recette", name="cuisine_recettes_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -311,6 +321,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'une recette
      *
      * @Route("/cuisine/recette/{id}/edit", name="cuisine_recette_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editRecette(Recette $recette, Request $request, ObjectManager $manager, EtapeRecetteRepository $repoEtapeRecette, IngredientRepository $repoIngredient):Response {
@@ -335,6 +347,7 @@ class CuisineController extends OutilsController
      * Création d'un stockage
      * 
      * @Route("/cuisine/stockage/new", name="cuisine_stockage_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -346,7 +359,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_stockages_liste';
         $variables['titre'] = "Création d'un stockage";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "Le stockage ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -357,6 +369,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des stockages
      * 
      * @Route("/cuisine/stockage", name="cuisine_stockages_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -371,6 +384,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'un stockage
      *
      * @Route("/cuisine/stockage/{id}/edit", name="cuisine_stockage_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editStockage(Stockage $stockage, Request $request, ObjectManager $manager):Response {
@@ -381,7 +396,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_edit.html.twig';
         $variables['pagederesultat'] = 'cuisine_stockages_liste';
         $variables['titre'] = "Edition du stockage".$stockage->getNom().".";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "Le stockage ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -393,6 +407,7 @@ class CuisineController extends OutilsController
      * Création d'un type d'aliment
      * 
      * @Route("/cuisine/typealiment/new", name="cuisine_typealiment_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -404,7 +419,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_typesaliment_liste';
         $variables['titre'] = "Création d'un type d'aliment";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "Le type daliment ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -415,6 +429,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des types d'aliment
      * 
      * @Route("/cuisine/typesaliment", name="cuisine_typesaliment_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -429,6 +444,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'un type d'aliment
      *
      * @Route("/cuisine/typealiement/{id}/edit", name="cuisine_typealiment_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editTypeAliment(TypeAliment $typeAliment, Request $request, ObjectManager $manager):Response {
@@ -439,7 +456,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_edit.html.twig';
         $variables['pagederesultat'] = 'cuisine_typesaliment_liste';
         $variables['titre'] = "Edition du type d'aliment".$typeAliment->getNom().".";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "L'aliment ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -451,6 +467,7 @@ class CuisineController extends OutilsController
      * Création d'une unité
      * 
      * @Route("/cuisine/unite/new", name="cuisine_unite_new")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -462,7 +479,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_new.html.twig';
         $variables['pagederesultat'] = 'cuisine_unites_liste';
         $variables['titre'] = "Création d'une unité";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "L'unité ### a bien été créé !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         
@@ -473,6 +489,7 @@ class CuisineController extends OutilsController
      * Affiche l'ensemble des unités
      * 
      * @Route("/cuisine/unite", name="cuisine_unites_liste")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @return Response
      */
@@ -487,6 +504,8 @@ class CuisineController extends OutilsController
      * Permet d'afficher le formulaire d'édition d'une unite
      *
      * @Route("/cuisine/unite/{id}/edit", name="cuisine_unite_edit")
+     * @IsGranted("ROLE_ADMIN")
+     * 
      * @return Response
      */
     public function editUnite(Unite $unite, Request $request, ObjectManager $manager):Response {
@@ -497,7 +516,6 @@ class CuisineController extends OutilsController
         $variables['pagedebase'] = 'cuisine/element_edit.html.twig';
         $variables['pagederesultat'] = 'cuisine_unites_liste';
         $variables['titre'] = "Edition de l'unité ".$unite->getNom().".";
-        $variables['dependances'] = null;
         $variables['texteConfirmation'] = "L'unité ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         

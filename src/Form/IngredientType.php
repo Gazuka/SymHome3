@@ -14,8 +14,8 @@ class IngredientType extends AbstractType
         $builder
             ->add('quantite')
             ->add('aliment')
-            ->add('recette')
-            ->add('etapesRecette')
+            //->add('recette')
+            //->add('etapesRecette')
         ;
     }
 

@@ -45,6 +45,11 @@ class Ingredient
         $this->etapesRecette = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->quantite." ".$this->aliment->getNom();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
