@@ -316,6 +316,20 @@ class CuisineController extends OutilsController
         $pagederesultat = "cuisine/recettes_liste.html.twig";
         return $this->recupererElements($repo, $elements, $titre, $pagederesultat);
     } 
+
+    /**
+     * Affiche 1 recette
+     * 
+     * @Route("/cuisine/recette/{id}", name="cuisine_recette")
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @return Response
+     */
+    public function afficherRecette(RecetteRepository $repo, $id):Response {
+        $element = "recette";
+        $pagederesultat = "cuisine/recette.html.twig";
+        return $this->afficherElement($id, $repo, $element, $pagederesultat);
+    } 
     
     /**
      * Permet d'afficher le formulaire d'édition d'une recette

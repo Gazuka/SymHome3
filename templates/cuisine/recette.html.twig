@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ recette.nom }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h3>{{ recette.nom }}</h3>
+        <p>Pour {{ recette.portion }} personnes</p>
+        <div class="row">
+            <div class="col-3">
+                <h6>Ingrédients</h6>
+                <ul>
+                    {% for ingredient in recette.ingredients %}
+                        <li>{{ ingredient.nom }} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-9">
+                Etapes
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

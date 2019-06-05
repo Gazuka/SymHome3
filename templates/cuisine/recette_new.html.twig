@@ -22,7 +22,7 @@
 
 {# GESTION DES ETAPES RECETTE ################################################################################################################################################}
 {% block _recette_etapesRecette_widget %}
-    <p>Ici, vous pouvez ajouter une étape pour la recette !</p>
+    
     {{ form_widget(form) }}
 
 <input type="hidden" id="widgets-counter" value="0">
@@ -38,21 +38,14 @@
 
 {% block _recette_etapesRecette_entry_widget %}
     <div class="form-group" id="block_{{id}}">
-        <div class="row">
-            <div class="col-10">
-                <div class="row">
-                    <div class="col">
-                        {{ form_widget(form.descriptif) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(form.position) }}
-                        {{ form_widget(form.ingredients) }}
-                        {{ form_widget(form.ustensiles) }}
-                    </div>
+        <div class="card p-3">
+            <div class="row">
+                <div class="col-11">
+                    {{ form_widget(form) }}
+                </div>                
+                <div class="col-1">
+                    <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
                 </div>
-            </div>
-            <div class="col-2">
-                <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
             </div>
         </div>
     </div>
@@ -60,7 +53,7 @@
 
 {# GESTION DES INGREDIENTS ###################################################################################################################################################}
 {% block _recette_ingredients_widget %}
-    <p>Ici, vous pouvez ajouter un ingrédient pour la recette !</p>
+    
     {{ form_widget(form) }}
 
 <input type="hidden" id="widgets-ingredients-counter" value="0">
@@ -76,17 +69,19 @@
 
 {% block _recette_ingredients_entry_widget %}
     <div class="form-group" id="block_{{id}}">
+    <div class="card p-3">
         <div class="row">
-            <div class="col-10">
+            <div class="col-11">
                 <div class="row">
                     <div class="col">
                         {{ form_widget(form) }}
                     </div>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-1">
                 <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
             </div>
+        </div>
         </div>
     </div>
 {% endblock %}

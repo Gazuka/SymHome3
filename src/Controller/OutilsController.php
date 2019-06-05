@@ -44,22 +44,24 @@ class OutilsController extends AbstractController
             $manager->persist($element);
 
             //On persist ses dependances
-            dump($dependances);
-            foreach($dependances as $dependance => $elem)
+            foreach($dependances as $dependances)
             {
-                eval('$objets = $element->get'.$dependance.'();');
-                foreach($objets as $objet)
+                foreach($dependances as $dependance => $elem)
                 {
-                    if(method_exists($objet, 'add'.$elem))
+                    eval('$objets = $element->get'.$dependance.'();');
+                    foreach($objets as $objet)
                     {
-                        eval('$objet->add'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
-                    }
-                    else
-                    {
-                        eval('$objet->set'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
-                    }
+                        if(method_exists($objet, 'add'.$elem))
+                        {
+                            eval('$objet->add'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
+                        }
+                        else
+                        {
+                            eval('$objet->set'.$elem.'($element);'); //add pour ManyToMany --> set pour le reste... voir comment le gérer...
+                        }
 
-                    $manager->persist($objet);
+                        $manager->persist($objet);
+                    }
                 }
             }  
 
@@ -119,6 +121,18 @@ class OutilsController extends AbstractController
         return $this->render($pagederesultat, [
             'titre' => $titre,
             $elements => $recup
+        ]);
+    }
+
+    /**
+     * Affichage de 1 élément par son id
+     *
+     * @return Response
+     */
+    protected function afficherElement($id, $repo, $element, $pagederesultat):Response {
+        $recup = $repo->find($id);
+        return $this->render($pagederesultat, [            
+            $element => $recup
         ]);
     }
 }
