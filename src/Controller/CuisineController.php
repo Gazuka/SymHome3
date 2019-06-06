@@ -326,26 +326,10 @@ class CuisineController extends OutilsController
      * @return Response
      */
     public function afficherRecette(RecetteRepository $repo, $id):Response {
+        $element = "recette";
         $pagederesultat = "cuisine/recette.html.twig";
-        $recette = $repo->find($id);
-
-        foreach($recette->getEtapesRecette() as $etape)
-        {
-            $descriptif = $etape->getDescriptif();
-
-            if (preg_match('~\[\#(\w*)\#\]~', $descriptif, $match))
-            {
-                //echo 'Correspondance : ', $match[1];
-                str_replace("[#".$match[1]."#]", "TOTO", $descriptif);
-                str_replace("%farine%", "TOTO", $descriptif);
-                dump($descriptif);
-                $etape->setDescriptif($descriptif);
-            }
-        }
-
-        return $this->render($pagederesultat, [            
-            'recette' => $recette
-        ]);
+        //$recette = $repo->find($id);
+        return $this->afficherElement($id, $repo, $element, $pagederesultat);
     } 
     
     /**

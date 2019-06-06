@@ -22,7 +22,7 @@
                 <h6>Etapes</h6>
                 <ol>
                     {% for etape in recette.etapesRecette %}
-                        <li>{{ etape.descriptif }}</li>
+                        <li>{{ etape.descriptifDynamique(4) }}</li>
                     {% endfor %}
                 </ol>
             </div>

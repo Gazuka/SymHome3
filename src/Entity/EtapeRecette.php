@@ -65,6 +65,30 @@ class EtapeRecette
         return $this->descriptif;
     }
 
+    public function getDescriptifDynamique($portion = null): ?string
+    {
+        $quantiteOrigine = 100;//temporaire
+        $portionOrigine = $this->recette->getPortion();
+        if($portion == null){$portion = $portionOrigine;}
+        $descriptif = $this->descriptif;
+        $stop = false;
+        do
+        {
+            if(preg_match('~\[\#(\w*)_(\d*)\#\]~', $descriptif, $match))
+            {
+                $quantite = ($quantiteOrigine / $portionOrigine * $portion) * $match[2] / 100;
+                $descriptif = str_replace($match[0], $quantite."TO".$match[1], $descriptif);
+                //$etape->setDescriptif($descriptif);              
+            }
+            else
+            {
+                $stop = true;
+            }
+        }
+        while($stop==false);
+        return $descriptif;
+    }
+
     public function setDescriptif(string $descriptif): self
     {
         $this->descriptif = $descriptif;
