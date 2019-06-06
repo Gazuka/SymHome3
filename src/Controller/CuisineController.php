@@ -326,9 +326,26 @@ class CuisineController extends OutilsController
      * @return Response
      */
     public function afficherRecette(RecetteRepository $repo, $id):Response {
-        $element = "recette";
         $pagederesultat = "cuisine/recette.html.twig";
-        return $this->afficherElement($id, $repo, $element, $pagederesultat);
+        $recette = $repo->find($id);
+
+        foreach($recette->getEtapesRecette() as $etape)
+        {
+            $descriptif = $etape->getDescriptif();
+
+            if (preg_match('~\[\#(\w*)\#\]~', $descriptif, $match))
+            {
+                //echo 'Correspondance : ', $match[1];
+                str_replace("[#".$match[1]."#]", "TOTO", $descriptif);
+                str_replace("%farine%", "TOTO", $descriptif);
+                dump($descriptif);
+                $etape->setDescriptif($descriptif);
+            }
+        }
+
+        return $this->render($pagederesultat, [            
+            'recette' => $recette
+        ]);
     } 
     
     /**
@@ -352,7 +369,7 @@ class CuisineController extends OutilsController
         $variables['texteConfirmation'] = "La recette ### a bien été modifiée !";
         $variables['texteConfirmationEval']["###"] = '$element->getNom();';
         $variables['deletes'][1] = array('findBy' => 'recette', 'classEnfant' => 'EtapesRecette', 'repo' => $repoEtapeRecette );
-        $variables['deletes'][2] = array('findBy' => 'recette', 'classEnfant' => 'Ingredient', 'repo' => $repoIngredient );
+        $variables['deletes'][2] = array('findBy' => 'recette', 'classEnfant' => 'Ingredients', 'repo' => $repoIngredient );
         return $this->formElement($variables);
     }
 

@@ -14,12 +14,17 @@
                 <h6>Ingrédients</h6>
                 <ul>
                     {% for ingredient in recette.ingredients %}
-                        <li>{{ ingredient.nom }} </li>
+                        <li>{{ ingredient.quantite }} {{ ingredient.aliment.unite }} - {{ ingredient.aliment.nom }} </li>
                     {% endfor %}
                 </ul>
             </div>
             <div class="col-9">
-                Etapes
+                <h6>Etapes</h6>
+                <ol>
+                    {% for etape in recette.etapesRecette %}
+                        <li>{{ etape.descriptif }}</li>
+                    {% endfor %}
+                </ol>
             </div>
         </div>
     </div>
