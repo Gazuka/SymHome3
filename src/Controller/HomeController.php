@@ -19,12 +19,13 @@ class HomeController extends AbstractController
         //On ajoute des variables selon la page de redirection
         switch($fulfillment->Action)
         {
-            /*case 'liste_boites':                
+            case 'liste_boites':                
                 //$age = $fulfillment->fulfillmentRecupContext('patate', 'age');
-                $repo = $manager->getRepository(Boite::class);
-                return $this->listingBoites($repo);
+                //$repo = $manager->getRepository(Boite::class);
+                //return $this->listingBoites($repo);
+                return $this->render('home/boites_liste.json.twig');
             break;
-            case 'liste_typealiment':
+            /*case 'liste_typealiment':
                 //Affiche la liste des type d'aliment
                 $repo = $manager->getRepository(TypeAliment::class);
                 return $this->listingTypesAliment($repo);

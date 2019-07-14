@@ -18,7 +18,7 @@ class Fulfillment {
         //Appel de la fonction demandé
         //return $this->fulfillmentTransformAction();
         //return $this->fulfillmentRepondre(); 
-        dump($this->Action);
+        //dump($this->Action);
     }
 
     /**
