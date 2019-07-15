@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Service\Fulfillment;
+use App\Repository\BoiteRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class HomeController extends AbstractController
+class HomeController extends OutilsController
 {
     /**
      * @Route("/home", name="home")
@@ -23,7 +24,7 @@ class HomeController extends AbstractController
                 //$age = $fulfillment->fulfillmentRecupContext('patate', 'age');
                 //$repo = $manager->getRepository(Boite::class);
                 //return $this->listingBoites($repo);
-                return $this->render('home/boites_liste.json.twig');
+                return $this->listeBoites();
             break;
             /*case 'liste_typealiment':
                 //Affiche la liste des type d'aliment
@@ -49,5 +50,17 @@ class HomeController extends AbstractController
         /*return $this->render('home/index.json.twig', [
             'controller_name' => 'HomeController',
         ]);*/
+    }
+
+    /**
+     * Affiche l'ensemble des boites
+     *
+     * @return Response
+     */
+    public function listeBoites(BoiteRepository $repo):Response {
+        $elements = "boites";
+        $titre = "Listing des boites";
+        $pagederesultat = "home/boites_liste.json.twig";
+        return $this->recupererElements($repo, $elements, $titre, $pagederesultat);
     }
 }
