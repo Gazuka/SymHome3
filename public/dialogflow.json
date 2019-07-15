@@ -1,0 +1,28 @@
+{
+  "responseId": "e4387a07-5080-46ee-9f01-9d622ffddd0d-5b26cf67",
+  "queryResult": {
+    "queryText": "liste moi les boites disponibles",
+    "action": "liste_boites",
+    "parameters": {},
+    "allRequiredParamsPresent": true,
+    "fulfillmentMessages": [
+      {
+        "text": {
+          "text": [
+            ""
+          ]
+        }
+      }
+    ],
+    "intent": {
+      "name": "projects/testcongelo/agent/intents/d6cacf60-49b2-45dc-b38c-dcbcf26c0abe",
+      "displayName": "SymHome - liste_boites : Liste moi les boites disponibles."
+    },
+    "intentDetectionConfidence": 1,
+    "languageCode": "fr"
+  },
+  "originalDetectIntentRequest": {
+    "payload": {}
+  },
+  "session": "projects/testcongelo/agent/sessions/2b352ab0-2f4d-ae95-519e-d6d8c09d030a"
+}

@@ -11,7 +11,7 @@ class Fulfillment {
     public function index()
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method == 'POST'){$fichier = 'php://input';}else{$fichier = 'test.json';}//fichier reel ou fichier fictif pour dev
+        if($method == 'POST'){$fichier = 'php://input';}else{$fichier = 'dialogflow.json';}//fichier reel ou fichier fictif pour dev
 
         //Récupération du fichier Json
         $this->fulfillment($fichier);
