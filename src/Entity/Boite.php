@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BoiteRepository")
  */
-class Boite
+class Boite extends Entity
 {
     /**
      * @ORM\Id()
@@ -33,6 +34,9 @@ class Boite
      */
     private $preparation;
 
+    /** ============================================================================================== */
+    /** === FONCTIONS MAGIQUES ======================================================================= */
+    /** ============================================================================================== */
     public function __construct()
     {
     }
@@ -42,40 +46,37 @@ class Boite
         return $this->nom;
     }
 
+    /** ============================================================================================== */
+    /** === GETTEUR et SETTEUR ======================================================================= */
+    /** ============================================================================================== */
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getNom(): ?string
     {
         return $this->nom;
     }
-
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
-
     public function getStockage(): ?Stockage
     {
         return $this->stockage;
     }
-
     public function setStockage(?Stockage $stockage): self
     {
         $this->stockage = $stockage;
 
         return $this;
     }
-
     public function getPreparation(): ?Preparation
     {
         return $this->preparation;
     }
-
     public function setPreparation(?Preparation $preparation): self
     {
         $this->preparation = $preparation;
@@ -83,8 +84,15 @@ class Boite
         return $this;
     }
 
-    public function vider()
+    /** ============================================================================================== */
+    /** === FONCTIONS PERSONNELLES =================================================================== */
+    /** ============================================================================================== */
+    /** Supprime le contenu de la boite et son stockage 
+     * @return void
+    */
+    public function vider(): void
     {
         $this->preparation = null;
+        $this->stockage = null;
     }
 }

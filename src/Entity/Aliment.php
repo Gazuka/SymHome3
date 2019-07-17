@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AlimentRepository")
  */
-class Aliment
+class Aliment extends Entity;
 {
     /**
      * @ORM\Id()
@@ -45,6 +46,9 @@ class Aliment
      */
     private $unite;
 
+    /** ============================================================================================== */
+    /** === FONCTIONS MAGIQUES ======================================================================= */
+    /** ============================================================================================== */
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -56,24 +60,23 @@ class Aliment
         return $this->nom;
     }
 
+    /** ============================================================================================== */
+    /** === GETTEUR et SETTEUR ======================================================================= */
+    /** ============================================================================================== */
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getNom(): ?string
     {
         return $this->nom;
     }
-
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
-
-    
     /**
      * @return Collection|Produit[]
      */
@@ -81,7 +84,6 @@ class Aliment
     {
         return $this->produits;
     }
-
     public function addProduit(Produit $produit): self
     {
         if (!$this->produits->contains($produit)) {
@@ -91,7 +93,6 @@ class Aliment
 
         return $this;
     }
-
     public function removeProduit(Produit $produit): self
     {
         if ($this->produits->contains($produit)) {
@@ -104,7 +105,6 @@ class Aliment
 
         return $this;
     }
-
     /**
      * @return Collection|Ingredient[]
      */
@@ -112,7 +112,6 @@ class Aliment
     {
         return $this->ingredients;
     }
-
     public function addIngredient(Ingredient $ingredient): self
     {
         if (!$this->ingredients->contains($ingredient)) {
@@ -122,7 +121,6 @@ class Aliment
 
         return $this;
     }
-
     public function removeIngredient(Ingredient $ingredient): self
     {
         if ($this->ingredients->contains($ingredient)) {
@@ -135,28 +133,29 @@ class Aliment
 
         return $this;
     }
-
     public function getTypeAliment(): ?TypeAliment
     {
         return $this->typeAliment;
     }
-
     public function setTypeAliment(?TypeAliment $typeAliment): self
     {
         $this->typeAliment = $typeAliment;
 
         return $this;
     }
-
     public function getUnite(): ?Unite
     {
         return $this->unite;
     }
-
     public function setUnite(?Unite $unite): self
     {
         $this->unite = $unite;
 
         return $this;
     }
+
+    /** ============================================================================================== */
+    /** === FONCTIONS PERSONNELLES =================================================================== */
+    /** ============================================================================================== */
+
 }
